@@ -25,3 +25,22 @@ body, a:link, a:visited, a:active{
   border-radius:10px;
   position:absolute;
 }
+
+.cartman{
+  position: absolute;
+  width: 75px;
+}
+
+/*@-webkit-keyframes spin { 100% { -webkit-transform: rotate(360deg); } }*/
+.cartman:hover{
+  width: 150px;
+  -webkit-transition-duration: 2s;
+  -webkit-transform: rotate(360deg);
+}
+
+.lineUpButton{
+  color: #0088FF;
+  float: right;
+  padding:5px 12px 0 5px;
+  text-decoration: none;
+}

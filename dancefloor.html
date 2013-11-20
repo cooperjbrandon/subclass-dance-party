@@ -6,17 +6,26 @@
     <script src="lib/jquery.js"></script>
     <script src="src/dancer.js"></script>
     <script src="src/blinkyDancer.js"></script>
+    <script src="src/colorDancer.js"></script>
+    <script src="src/movingDancer.js"></script>
   </head>
   <body>
 
     <div class="topbar">
       <span class="title">object dance party</span>
-      <a href="#" class="addDancerButton" data-dancer-maker-function-name="makeBlinkyDancer">add a blinky dancer</a>
+      <a href="#" class="addDancerButton" data-dancer-maker-function-name="BlinkyDancer">+ blinky dancer</a>
+      <a href="#" class="addDancerButton" data-dancer-maker-function-name="ColorDancer">+ colored blinky dancer</a>
+      <a href="#" class="addDancerButton" data-dancer-maker-function-name="MovingDancer">+ moving dancer</a>
+      <a href="#" class="lineUpButton">Line up dancers</a>
     </div>
 
     <script>
       $(document).ready(function(){
         window.dancers = [];
+
+        // $(".cartman").hover(function() {
+        //   $(this).css('border', '10px solid white');
+        // });
 
         $(".addDancerButton").on("click", function(event){
           /* This function sets up the click handlers for the create-dancer
@@ -37,14 +46,46 @@
           var dancerMakerFunction = window[dancerMakerFunctionName];
 
           // make a dancer with a random position
-          var dancer = dancerMakerFunction(
+          var dancer = new dancerMakerFunction(
             $("body").height() * Math.random(),
             $("body").width() * Math.random(),
             Math.random() * 1000
           );
 
           $('body').append(dancer.$node);
+
+          window.dancers.push(dancer);
         });
+
+
+        setInterval(function() {
+          for (var i = 0; i < window.dancers.length; i++) {
+            var dancers = window.dancers;
+            var height, width;
+            if (i === window.dancers.length - 1) {
+              height = Math.abs(dancers[i].top - dancers[0].top);
+              width = Math.abs(dancers[i].left - dancers[0].left);
+            } else {
+              height = Math.abs(dancers[i].top - dancers[i+1].top);
+              width = Math.abs(dancers[i].left - dancers[i+1].left);
+            }
+            var difference = Math.sqrt(Math.pow(height,2) + Math.pow(width, 2));
+            if (dancers[i].class ==='cartman') {
+              if (difference > $(window).width()/2) {
+                dancers[i].$node.css('border', '10px solid green');
+              } else {
+                dancers[i].$node.css('border', '10px solid white');
+              }
+            }
+          }
+         }, 1000);
+
+        $(".lineUpButton").on("click", function(event) {
+          for (var i = 0; i < window.dancers.length; i++) {
+            window.dancers[i].lineUp();
+          }
+        });
+
       });
     </script>
 
